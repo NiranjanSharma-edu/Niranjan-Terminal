@@ -1,26 +1,257 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0f18;
+  --foreground: #9cdcfe;
+  --primary: #569cd6;
+  --secondary: #c586c0;
+  --accent: #4ec9b0;
+  --border: #1e293b;
+  --muted: #4e5a65;
+  --success: #4ade80;
+  --warning: #facc15;
+  --error: #f87171;
+  --glow-color: rgba(86, 156, 214, 0.15);
+  
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme='matrix'] {
+  --background: #000000;
+  --foreground: #00ff66;
+  --primary: #00ff66;
+  --secondary: #00aa33;
+  --accent: #00ff66;
+  --border: #003311;
+  --muted: #005522;
+  --success: #00ff66;
+  --warning: #adff2f;
+  --error: #ff3333;
+  --glow-color: rgba(0, 255, 102, 0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme='ubuntu'] {
+  --background: #2c001e;
+  --foreground: #dfdbd2;
+  --primary: #e95420;
+  --secondary: #77216f;
+  --accent: #aea79f;
+  --border: #4d153e;
+  --muted: #8c8279;
+  --success: #2c882c;
+  --warning: #efb920;
+  --error: #df382c;
+  --glow-color: rgba(233, 84, 32, 0.15);
 }
 
-body {
+[data-theme='cyberpunk'] {
+  --background: #0f051d;
+  --foreground: #00f0ff;
+  --primary: #ff0055;
+  --secondary: #ffe600;
+  --accent: #00f0ff;
+  --border: #2d1154;
+  --muted: #6a1b9a;
+  --success: #39ff14;
+  --warning: #ffb703;
+  --error: #ff0055;
+  --glow-color: rgba(255, 0, 85, 0.25);
+}
+
+[data-theme='hacker'] {
+  --background: #050505;
+  --foreground: #39ff14;
+  --primary: #39ff14;
+  --secondary: #16520b;
+  --accent: #39ff14;
+  --border: #143d0b;
+  --muted: #226414;
+  --success: #39ff14;
+  --warning: #dfbb00;
+  --error: #ff3333;
+  --glow-color: rgba(57, 255, 20, 0.25);
+}
+
+[data-theme='retro'] {
+  --background: #0d0800;
+  --foreground: #ffb000;
+  --primary: #ffb000;
+  --secondary: #a37000;
+  --accent: #ffb000;
+  --border: #442a00;
+  --muted: #7c5803;
+  --success: #ffb000;
+  --warning: #ffcc00;
+  --error: #ff3333;
+  --glow-color: rgba(255, 176, 0, 0.3);
+}
+
+@theme {
+  --color-bg: var(--background);
+  --color-fg: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-glow: var(--glow-color);
+
+  --font-mono: var(--font-mono);
+
+  --animate-flicker: flicker 0.15s infinite;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-crt-glow: crt-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.99; }
+  50% { opacity: 1; }
+  100% { opacity: 0.985; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: currentColor }
+}
+
+@keyframes crt-glow {
+  0% { text-shadow: 0 0 2px var(--foreground), 0 0 4px var(--glow-color); }
+  100% { text-shadow: 0 0 4px var(--foreground), 0 0 8px var(--glow-color), 0 0 12px var(--glow-color); }
+}
+
+/* CRT Screen FX */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.crt-scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Glow Utilities */
+.text-glow {
+  text-shadow: 0 0 4px var(--foreground), 0 0 8px var(--glow-color);
+}
+
+.text-glow-primary {
+  text-shadow: 0 0 4px var(--primary), 0 0 8px var(--glow-color);
+}
+
+.border-glow {
+  box-shadow: 0 0 8px var(--border), inset 0 0 8px var(--border);
+}
+
+.panel-glow {
+  box-shadow: 0 0 15px var(--glow-color);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
   background: var(--background);
+  border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Custom Scrollbar for Terminal component */
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: var(--muted);
+}
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Glassmorphism panel styling */
+.glass-panel {
+  background: rgba(13, 15, 24, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='matrix'] .glass-panel {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(0, 255, 102, 0.2);
+}
+
+[data-theme='ubuntu'] .glass-panel {
+  background: rgba(44, 0, 30, 0.8);
+  border: 1px solid rgba(233, 84, 32, 0.2);
+}
+
+[data-theme='cyberpunk'] .glass-panel {
+  background: rgba(15, 5, 29, 0.75);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+[data-theme='hacker'] .glass-panel {
+  background: rgba(5, 5, 5, 0.9);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+}
+
+[data-theme='retro'] .glass-panel {
+  background: rgba(13, 8, 0, 0.85);
+  border: 1px solid rgba(255, 176, 0, 0.2);
+}
+
+/* Custom input caret blinking */
+.caret-blink {
+  border-right: 8px solid var(--foreground);
+  animation: blink 1s step-end infinite;
+}
+
+/* General Layout defaults */
+body {
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+}
+
+.terminal-container {
+  font-family: var(--font-mono);
 }
