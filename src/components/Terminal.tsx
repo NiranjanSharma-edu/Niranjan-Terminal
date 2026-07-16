@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { executeCommand, ASCII_BANNER, CommandOutput, ProjectItem } from '@/lib/terminalEngine';
+import { executeCommand, ASCII_BANNER, ASCII_HTML_BANNER, CommandOutput, ProjectItem } from '@/lib/terminalEngine';
 import { Terminal as TermIcon, Cpu, HardDrive, Wifi, Volume2, VolumeX, Eye } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import * as db from '@/lib/db';
@@ -111,7 +111,7 @@ export default function Terminal() {
     }
 
     // Add welcome banner
-    setHistory([{ command: 'banner', output: { text: ASCII_BANNER } }]);
+    setHistory([{ command: 'banner', output: { text: ASCII_BANNER, html: ASCII_HTML_BANNER } }]);
     
     // Fetch repositories
     fetchRepos();

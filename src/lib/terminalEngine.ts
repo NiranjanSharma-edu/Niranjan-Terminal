@@ -28,22 +28,48 @@ export interface TerminalContext {
 
 // Helper: Ascii art logo for NiranjanOS
 export const ASCII_BANNER = `
- _   _ ___ ____   _   _   _   _    _   _      ____  
-| \\ | |_ _|  _ \\ / \\ | \\ | | | |  / \\ | |    / ___| 
-|  \\| || || |_) / _ \\|  \\| | | | / _ \\| |    \\___ \\ 
-| |\\  || ||  _ / ___ \\ |\\  |_| |/ ___ \\ |___  ___) |
-|_| \\_|___|_| /_/   \\_\\_| \\_\\___/_/   \\_\\____|____/  
- _____ _____ ____  __  __ ___ _   _   _    _     
-|_   _| ____|  _ \\|  \\/  |_ _| \\ | | / \\  | |    
-  | | |  _| | |_) | |\\/| || ||  \\| |/ _ \\ | |    
-  | | | |___|  _ <| |  | || || |\\  / ___ \\| |___ 
-  |_| |_____|_| \\_\\_|  |_|___|_| \\_/_/   \\_\\_____|
+             _   __________  ___    _   __    _____    _   __   __   _____ 
+            / | / /  _/ __ \\/   |  / | / /   / /   |  / | / /  / /  / ___/ 
+           /  |/ // // /_/ / /| | /  |/ /_  / / /| | /  |/ /  /_/   \\__ \\  
+          / /|  // // _, _/ ___ |/ /|  / /_/ / ___ |/ /|  /        ___/ /  
+         /_/ |_/___/_/ |_/_/__|_/_/_|_/\\____/_/  |_/_/ |_/        /____/   
+
+                        ______                    _             __
+                       /_  __/__  _________ ___  (_)___  ____ _/ /
+                        / / / _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ / 
+                       / / /  __/ /  / / / / / / / / / / /_/ / /  
+                      /_/  \\___/_/  /_/ /_/ /_/_/_/ /_/\\__,_/_/   
 
 =============================================================================================
                      NIRANJAN'S TERMINAL v1.0.0 (Kernel 5.15.0-x86_64)
                  Logged in as guest@niranjan.sharma. Type 'help' to begin.
 =============================================================================================
 `;
+
+export const ASCII_HTML_BANNER = `
+<div class="flex flex-col items-center justify-center w-full my-4 select-text">
+  <pre class="font-mono text-left leading-none text-glow-primary text-primary select-text text-[1.4vw] min-[640px]:text-xs md:text-sm transition-all duration-300">
+             _   __________  ___    _   __    _____    _   __   __   _____ 
+            / | / /  _/ __ \\/   |  / | / /   / /   |  / | / /  / /  / ___/ 
+           /  |/ // // /_/ / /| | /  |/ /_  / / /| | /  |/ /  /_/   \\__ \\  
+          / /|  // // _, _/ ___ |/ /|  / /_/ / ___ |/ /|  /        ___/ /  
+         /_/ |_/___/_/ |_/_/__|_/_/_|_/\\____/_/  |_/_/ |_/        /____/   
+
+                        ______                    _             __
+                       /_  __/__  _________ ___  (_)___  ____ _/ /
+                        / / / _ \\/ ___/ __ \`__ \\/ / __ \\/ __ \`/ / 
+                       / / /  __/ /  / / / / / / / / / / /_/ / /  
+                      /_/  \\___/_/  /_/ /_/ /_/_/_/ /_/\\__,_/_/   
+  </pre>
+  <pre class="font-mono text-center select-text text-xs md:text-sm mt-4 text-glow text-foreground opacity-90 w-full">
+=============================================================================================
+                     NIRANJAN'S TERMINAL v1.0.0 (Kernel 5.15.0-x86_64)
+                 Logged in as guest@niranjan.sharma. Type 'help' to begin.
+=============================================================================================
+  </pre>
+</div>
+`;
+
 
 export async function executeCommand(
   rawInput: string,
@@ -74,7 +100,7 @@ export async function executeCommand(
       return { text: '', clear: true };
 
     case 'banner':
-      return { text: ASCII_BANNER };
+      return { text: ASCII_BANNER, html: ASCII_HTML_BANNER };
 
     case 'whoami':
       return { text: 'visitor@niranjan.sharma (Guest Developer session)' };
